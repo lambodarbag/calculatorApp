@@ -3,15 +3,50 @@
     padding: 0;
     box-sizing: border-box;
 }
-html,
-body {
+html,body {
     height: 100%;
     width: 100%;
 }
 
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Montserrat", sans-serif;
+    background: #283345;
+}
+
+.container {
+    border: 1px solid black;
+    height: 400px;
+    width: 400px;
+    background: #F0F2F5;
+    border-radius: 10px;
+}
+
+.heading {
+    height: 100px;
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input {
+    height: 50px;
+    width: 300px;
+    padding: 5px;
+    outline: none;
+}
 .box {
     width: 300px;
     height: 200px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+}
+
+button{
+    background: #F0F2F5;
 }
