@@ -1,5 +1,3 @@
-.
-
 🧮 Calculator App (Neumorphic UI)
 
 A modern Calculator Web App built using HTML, CSS, and Vanilla JavaScript with a clean neumorphic design and proper calculator logic.
