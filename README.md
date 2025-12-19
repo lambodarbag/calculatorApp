@@ -1,36 +1,33 @@
-🧮 Calculator App (Neumorphic UI)
+# 🧮 Calculator App (Neumorphic UI)
 
-A modern Calculator Web App built using HTML, CSS, and Vanilla JavaScript with a clean neumorphic design and proper calculator logic.
+A modern **Calculator Web App** built using **HTML, CSS, and Vanilla JavaScript** with a clean **neumorphic design** and smart calculator logic.
 
-✨ Features
+---
 
-➕➖✖️➗ Basic arithmetic operations
+## ✨ Features
 
-🟢 Smart = behavior (no unwanted concatenation)
+- ➕➖✖️➗ Basic arithmetic operations  
+- 🟢 Smart `=` behavior (no unwanted concatenation after result)
+- 🧹 **AC** (clear all) & **DEL** (delete last digit)
+- 🔢 Decimal support
+- 🎨 Neumorphic UI design
+- 🖱️ Event delegation for better performance
+- 🔘 Toggle animation (UI purpose)
 
-🧹 AC (clear all) & DEL (delete last digit)
+---
 
-🔢 Decimal support
+## 🛠️ Tech Stack
 
-🎨 Neumorphic UI design
+- **HTML5**
+- **CSS3**
+- **JavaScript (Vanilla)**
+- **Font Awesome**
+- **Google Fonts (Montserrat)**
 
-🖱️ Event delegation for better performance
+---
 
-🔘 Toggle animation (UI purpose)
+## 📁 Project Structure
 
-🛠️ Tech Stack
-
-HTML5
-
-CSS3
-
-JavaScript (Vanilla)
-
-Font Awesome
-
-Google Fonts (Montserrat)
-
-📁 Project Structure
 calculator/
 │
 ├── index.html
@@ -38,42 +35,37 @@ calculator/
 ├── script.js
 └── README.md
 
-🧠 Logic Highlights
 
-Uses data-action attributes for operators
+---
 
-closest("button") to detect clicks correctly
+## 🧠 Logic Highlights
 
-Guard clauses (return) to prevent invalid input
+- Uses `data-action` attributes for operators
+- `closest("button")` for correct click targeting
+- Guard clauses (`return`) to prevent invalid input
+- `justCalculated` flag to manage result state
+- Prevents multiple operators together
 
-justCalculated flag to handle result state
+---
 
-Prevents multiple operators together
+## ⚙️ How It Works
 
-⚙️ How It Works
+1. Number buttons update the screen
+2. Operator buttons are validated before appending
+3. `=` evaluates the expression
+4. After calculation:
+   - Number press → starts new input
+   - Operator press → continues calculation
+5. DEL removes the last character
+6. AC resets the calculator
 
-Numbers update the display
+---
 
-Operators are validated before adding
+## 🚀 How to Run
 
-= evaluates the expression
-
-After calculation:
-
-Number press → starts new input
-
-Operator press → continues calculation
-
-DEL removes last character
-
-AC resets everything
-
-🚀 How to Run
-
-Clone the repository
-
+1. Clone the repository
+```bash
 git clone https://github.com/your-username/calculator.git
-
 
 Open index.html in your browser
 
@@ -81,23 +73,25 @@ Open index.html in your browser
 
 eval() is used for learning purposes only
 
-Not recommended for production apps
+Not recommended for production applications
 
 🔮 Future Improvements
 
-Keyboard support
+Keyboard input support
 
-Remove eval() (custom parser)
+Remove eval() (custom calculation logic)
 
 Dark / Light mode
 
-Mobile optimization
+Mobile responsiveness
 
 👨‍💻 Author
 
-Ayushman
-Frontend Developer (Learning & Building 🚀)
+AS
+Frontend Developer 🚀
 
 ⭐ Support
 
 If you like this project, give it a ⭐ on GitHub!
+
+
