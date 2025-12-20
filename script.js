@@ -10,6 +10,7 @@ toggle.addEventListener("click", () => {
 
 let screenValue = "0";
 let justCalculated = false; // ⭐ result ke baad state
+    screen.value = screenValue;
 
 box.addEventListener("click", (e) => {
   const button = e.target.closest("button");
@@ -83,89 +84,114 @@ if (action === "decimal") {
 
 
   /* ---------- OPERATORS ---------- */
-  if (["add", "subtract", "multiply", "divide"].includes(action)) {
-    const lastChar = screenValue.slice(-1);
-    if ("+-*/".includes(lastChar)) return;
+if (
+  action === "add" ||
+  action === "subtract" ||
+  action === "multiply" ||
+  action === "divide"
+) {
+  const operatorMap = {
+    add: "+",
+    subtract: "-",
+    multiply: "*",
+    divide: "/"
+  };
 
-    const operatorMap = {
-      add: "+",
-      subtract: "-",
-      multiply: "*",
-      divide: "/",
-    };
+  const op = operatorMap[action];
+  const lastChar = screenValue.slice(-1);
 
-    screenValue += operatorMap[action];
-    justCalculated = false;
+  /* ✅ NEGATIVE NUMBER AT START */
+  if (screenValue === "0" && op === "-") {
+    screenValue = "-";
     updateScreen();
     return;
   }
 
-  /* ---------- PERCENTAGE ---------- */
-if (action === "percent") {
+  /* ❌ BLOCK OTHER OPERATORS AT START */
+  if (screenValue === "0") return;
 
-  // agar result ke baad % dabaya
+  /* ✅ AFTER RESULT */
   if (justCalculated) {
-    screenValue = String(Number(screenValue) / 100);
+    screenValue += op;
     justCalculated = false;
     updateScreen();
     return;
   }
 
-  // expression ko todna (last operator dhundhne ke liye)
-  const match = screenValue.match(/([\+\-\*\/])(\d+\.?\d*)$/);
-
-  // case 1: single number (50 %)
-  if (!match) {
-    screenValue = String(Number(screenValue) / 100);
-    updateScreen();
-    return;
+  /* ✅ OPERATOR OVERRIDE ( + → - etc ) */
+  if ("+-*/".includes(lastChar)) {
+    screenValue = screenValue.slice(0, -1) + op;
+  } else {
+    screenValue += op;
   }
-
-  // case 2: operator ke saath (200 + 10 %)
-  const operator = match[1];
-  const percentValue = Number(match[2]);
-
-  const baseValue = Number(
-    screenValue.slice(0, screenValue.lastIndexOf(operator))
-  );
-
-  let result;
-
-  if (operator === "+" || operator === "-") {
-    result = baseValue * (percentValue / 100);
-  } else if (operator === "*") {
-    result = percentValue / 100;
-  } else if (operator === "/") {
-    result = percentValue / 100;
-  }
-
-  screenValue =
-    baseValue + operator + result;
 
   updateScreen();
   return;
 }
 
 
-if (action === "equal") {
+
+
+
+  /* ---------- PERCENTAGE ---------- */
+if (action === "percent") {
+
+  if (
+    screenValue === "0" ||
+    screenValue === "-" ||
+    screenValue === "Error"
+  ) return;
+
+  const lastChar = screenValue.slice(-1);
+  if ("+-*/".includes(lastChar)) return;
+
+  // last number extract karo
+  const parts = screenValue.split(/([\+\-\*\/])/);
+  const lastNumber = parts.pop();
+  const operator = parts.join("");
+
+  const percentValue = parseFloat(lastNumber) / 100;
+  if (isNaN(percentValue)) return;
+
+  screenValue = operator + percentValue;
+  updateScreen();
+  justCalculated = true;
+  return;
+}
+
+
+  /* ---------- EQUALS ---------- */
+  if (action === "equal") {
+
+  if (
+    screenValue === "" ||
+    screenValue === "-" ||
+    screenValue === "Error"
+  ) return;
+
   const lastChar = screenValue.slice(-1);
   if ("+-*/".includes(lastChar)) return;
 
   try {
-    let result = Function(`"use strict"; return (${screenValue})`)();
+    let result = eval(screenValue);
 
-    // 🔥 FIX FOR DECIMAL PRECISION
-    result = Number.isInteger(result)
-      ? result
-      : parseFloat(result.toFixed(10));
+    if (!isFinite(result)) {
+      screenValue = "Error";
+    } else {
+      screenValue = String(
+        parseFloat(result.toFixed(10))
+      );
+    }
 
-    screenValue = String(result);
+    screen.value = screenValue;
     justCalculated = true;
+
   } catch {
     screenValue = "Error";
+    screen.value = screenValue;
   }
 
-  updateScreen();
+  return;
 }
 
   
