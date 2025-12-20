@@ -1,7 +1,6 @@
 {
   "name": "Calculator App",
   "short_name": "Calc",
-  "description": "A modern calculator with dark mode and decimal handling",
   "start_url": "/calculatorApp/index.html",
   "display": "standalone",
   "background_color": "#303D56",
@@ -16,6 +15,14 @@
       "src": "/calculatorApp/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/calculatorApp/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ]
 }
