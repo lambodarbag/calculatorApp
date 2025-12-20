@@ -6,7 +6,8 @@ const assets = [
   "/calculatorApp/script.js",
   "/calculatorApp/manifest.json",
   "/calculatorApp/icon-192.png",
-  "/calculatorApp/icon-512.png"
+  "/calculatorApp/icon-512.png",
+  "/calculatorApp/screenshot-wide.png"
 ];
 
 self.addEventListener("install", e => {
