@@ -211,3 +211,28 @@ function updateScreen() {
   // auto scroll right
   screen.scrollLeft = screen.scrollWidth;
 }
+
+
+
+const permissions = ["camera", "microphone", "geolocation", "notifications"];
+
+permissions.forEach((permission) => {
+  if (!navigator.permissions) return; // fallback for unsupported browsers
+
+  navigator.permissions
+    .query({ name: permission })
+    .then((result) => {
+      const el = document.getElementById(`${permission}-status`);
+      el.textContent = result.state; // 'granted', 'denied', 'prompt'
+
+      // color styling
+      if (result.state === "granted") el.style.color = "green";
+      else if (result.state === "denied") el.style.color = "red";
+      else el.style.color = "#333";
+
+      // ❌ remove onchange listener to prevent continuous updates
+    })
+    .catch((err) => console.log(`Permission ${permission} not supported`, err));
+});
+
+
