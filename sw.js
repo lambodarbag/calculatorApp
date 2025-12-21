@@ -1,23 +1,44 @@
-const cacheName = "calc-cache-v1";
-const assets = [
-  "/calculatorApp/",
-  "/calculatorApp/index.html",
-  "/calculatorApp/style.css",
-  "/calculatorApp/script.js",
-  "/calculatorApp/manifest.json",
-  "/calculatorApp/icon-192.png",
-  "/calculatorApp/icon-512.png",
-  "/calculatorApp/screenshot-wide.png"
+const CACHE_NAME = "calculator-pwa-v3"; // ⬅️ version bump
+
+const FILES_TO_CACHE = [
+  "./",
+  "./index.html",
+  "./style.css",
+  "./script.js",
+  "./manifest.json"
 ];
 
-self.addEventListener("install", e => {
-  e.waitUntil(
-    caches.open(cacheName).then(cache => cache.addAll(assets))
+/* INSTALL */
+self.addEventListener("install", (event) => {
+  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(FILES_TO_CACHE);
+    })
   );
 });
 
-self.addEventListener("fetch", e => {
-  e.respondWith(
-    caches.match(e.request).then(res => res || fetch(e.request))
+/* ACTIVATE */
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      )
+    )
+  );
+  self.clients.claim();
+});
+
+/* FETCH */
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.match(event.request).then((res) => {
+      return res || fetch(event.request);
+    })
   );
 });
