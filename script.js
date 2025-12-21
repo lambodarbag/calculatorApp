@@ -213,26 +213,73 @@ function updateScreen() {
 }
 
 
+// List of permissions to check
+const permissions = ['camera', 'microphone', 'geolocation', 'notifications'];
 
-const permissions = ["camera", "microphone", "geolocation", "notifications"];
+// Utility function to update status text and color
+function updateStatus(id, state) {
+  const el = document.getElementById(id);
+  el.textContent = state;
+  if (state === "granted") el.style.color = "green";
+  else if (state === "denied") el.style.color = "red";
+  else el.style.color = "#333"; // default / prompt
+}
 
-permissions.forEach((permission) => {
-  if (!navigator.permissions) return; // fallback for unsupported browsers
+/* ---------- CAMERA ---------- */
+if (navigator.permissions) {
+  navigator.permissions.query({ name: "camera" })
+    .then(res => updateStatus("camera-status", res.state))
+    .catch(() => updateStatus("camera-status", "not supported"));
+}
 
-  navigator.permissions
-    .query({ name: permission })
-    .then((result) => {
-      const el = document.getElementById(`${permission}-status`);
-      el.textContent = result.state; // 'granted', 'denied', 'prompt'
-
-      // color styling
-      if (result.state === "granted") el.style.color = "green";
-      else if (result.state === "denied") el.style.color = "red";
-      else el.style.color = "#333";
-
-      // ❌ remove onchange listener to prevent continuous updates
-    })
-    .catch((err) => console.log(`Permission ${permission} not supported`, err));
+// Request Camera
+document.getElementById("camera-btn").addEventListener("click", () => {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(() => updateStatus("camera-status", "granted"))
+    .catch(() => updateStatus("camera-status", "denied"));
 });
 
+/* ---------- MICROPHONE ---------- */
+if (navigator.permissions) {
+  navigator.permissions.query({ name: "microphone" })
+    .then(res => updateStatus("microphone-status", res.state))
+    .catch(() => updateStatus("microphone-status", "not supported"));
+}
 
+// Request Microphone
+document.getElementById("microphone-btn").addEventListener("click", () => {
+  navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(() => updateStatus("microphone-status", "granted"))
+    .catch(() => updateStatus("microphone-status", "denied"));
+});
+
+/* ---------- LOCATION ---------- */
+if (navigator.permissions) {
+  navigator.permissions.query({ name: "geolocation" })
+    .then(res => updateStatus("location-status", res.state))
+    .catch(() => updateStatus("location-status", "not supported"));
+}
+
+// Request Location
+document.getElementById("location-btn").addEventListener("click", () => {
+  navigator.geolocation.getCurrentPosition(
+    () => updateStatus("location-status", "granted"),
+    () => updateStatus("location-status", "denied")
+  );
+});
+
+/* ---------- NOTIFICATIONS ---------- */
+const notificationEl = document.getElementById("notifications-status");
+if (!("Notification" in window)) {
+  updateStatus("notifications-status", "not supported");
+} else {
+  updateStatus("notifications-status", Notification.permission);
+}
+
+// Request Notifications
+document.getElementById("notification-btn").addEventListener("click", () => {
+  if (!("Notification" in window)) return;
+  Notification.requestPermission().then(permission => {
+    updateStatus("notifications-status", permission);
+  });
+});

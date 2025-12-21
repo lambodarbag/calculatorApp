@@ -399,7 +399,18 @@ body.dark .update-popup {
 }
 
 .permission-status li {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+}
+
+.permission-status button {
+  margin-left: 5px;
+  padding: 2px 8px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #048A81;
+  color: white;
 }
 
 
